@@ -17,9 +17,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
-    // 預先宣告全域變數與 iframe 處理函式
+    // 預先宣告全域表單提交旗標，防止 iframe 初始載入時出現 ReferenceError
     window.submitted = false;
-    window.isSubmitting = false;
 
     tailwind.config = {
       theme: {
@@ -354,19 +353,23 @@
       <p class="text-sm text-wedding-charcoal/70 mt-3 font-light">為了籌備最完善的宴席，請於收到邀請後協助填寫回覆。</p>
     </div>
 
-    <!-- 隱藏式 Iframe：標準尺寸與透明度，防止 iOS / Chrome 節能凍結 -->
-    <iframe name="hidden_iframe" id="hidden_iframe" class="w-0 h-0 opacity-0 absolute pointer-events-none -z-50 border-0"></iframe>
+    <!-- 隱藏式 Iframe 技術容器 (使用嚴格監聽，防止誤觸) -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 回函表單主體：原生 POST 提交至 hidden_iframe -->
+    <!-- 回函表單主體 -->
     <div class="glow-card rounded-3xl p-6 md:p-10 border border-wedding-sandstone/40 shadow-soft relative">
       <form id="weddingForm" 
-            action="https://docs.google.com/forms/d/e/1FAIpQLScltqEoZxdtP7sMR_-0rfAMgUXlQvZXURR7GyROZbvkPKjqQg/formResponse" 
+            action="https://script.google.com/macros/s/AKfycbxEUmWSjEZHudphtfUKjLnnTVt4mnHrNIcFxrDc3nZ5OgbVyT2rBqEf_9gQ40udFwQH/exec" 
             method="POST" 
             target="hidden_iframe" 
-            onsubmit="handleSubmitForm();" 
+            onsubmit="return handleSubmitForm(event);" 
             class="space-y-6">
 
-        <!-- 欄位 1: 姓名 NAME -->
+        <!-- Google 表單必要隱藏參數，防止 Google 反垃圾機制阻擋 -->
+        <input type="hidden" name="fvv" value="1">
+        <input type="hidden" name="pageHistory" value="0">
+
+        <!-- 欄位 1: 姓名 NAME (雙語標籤，內容空白) -->
         <div>
           <label for="entry_326328616" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
             姓名 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">NAME</span> <span class="text-wedding-brickRed">*</span>
@@ -379,10 +382,10 @@
                  class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
         </div>
 
-        <!-- 欄位 2: 電子信箱 EMAIL -->
+        <!-- 欄位 2: 電子郵件 EMAIL (雙語標籤，內容空白) -->
         <div>
           <label for="entry_300528326" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
-            電子信箱 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">EMAIL</span> <span class="text-wedding-brickRed">*</span>
+            電子郵件 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">EMAIL</span> <span class="text-wedding-brickRed">*</span>
           </label>
           <input type="email" 
                  id="entry_300528326" 
@@ -392,19 +395,20 @@
                  class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
         </div>
 
-        <!-- 欄位 3: 紙本喜帖收件地址 PRINTED WEDDING INVITATION -->
+        <!-- 欄位 3: 聯絡電話 PHONE (對應 entry.773929273) -->
         <div>
           <label for="entry_773929273" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
-            紙本喜帖收件地址 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">PRINTED WEDDING INVITATION</span>
+            聯絡電話 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">PHONE</span> <span class="text-wedding-brickRed">*</span>
           </label>
-          <input type="text" 
+          <input type="tel" 
                  id="entry_773929273" 
                  name="entry.773929273" 
-                 placeholder="若需紙本喜帖請填寫地址，無則可留空" 
+                 required 
+                 placeholder="請輸入您的手機或聯絡電話" 
                  class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
         </div>
 
-        <!-- 欄位 4: 與新人的關係 RELATIONSHIP -->
+        <!-- 欄位 4: 與新人的關係 RELATIONSHIP (純中文選項) -->
         <div>
           <label for="entry_333244215" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
             與新人的關係 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">RELATIONSHIP</span> <span class="text-wedding-brickRed">*</span>
@@ -413,11 +417,9 @@
                   name="entry.333244215" 
                   required 
                   class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
-            <option value="" selected disabled>請選擇關係</option>
+            <option value="" disabled selected>請選擇關係</option>
             <option value="男方親戚">男方親戚</option>
             <option value="女方親戚">女方親戚</option>
-            <option value="新郎同學、朋友">新郎同學、朋友</option>
-            <option value="新娘同學、朋友">新娘同學、朋友</option>
             <option value="男方同學、朋友">男方同學、朋友</option>
             <option value="女方同學、朋友">女方同學、朋友</option>
             <option value="新郎同事">新郎同事</option>
@@ -426,7 +428,7 @@
           </select>
         </div>
 
-        <!-- 欄位 5: 參加人數 GUESTS -->
+        <!-- 欄位 5: 參加人數 ATTENDEES (觸發智能邏輯) -->
         <div>
           <label for="entry_1271661895" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
             參加晚宴人數 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">GUESTS</span> <span class="text-wedding-brickRed">*</span>
@@ -442,39 +444,62 @@
           <p class="text-xs text-wedding-charcoal/50 mt-1.5">若不克出席，請填寫 0 即可</p>
         </div>
 
-        <!-- 智能表單邏輯容器 (素食與兒童椅人數，預設為 0 以保證通過驗證) -->
+        <!-- 智能表單邏輯容器：當人數 > 0 時動態淡入顯示 -->
         <div id="conditionalSection" class="hidden space-y-6 pt-4 border-t border-dashed border-wedding-sandstone/50 transition-all duration-300">
           
-          <!-- 素食人數 VEGETARIAN MEALS -->
-          <div>
-            <label for="entry_281892954" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
-              素食人數 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">VEGETARIAN MEALS</span>
-            </label>
-            <input type="number" 
-                   id="entry_281892954" 
-                   name="entry.281892954" 
-                   min="0" 
-                   value="0" 
-                   placeholder="若無人吃素請填 0" 
-                   class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
+          <!-- 直接詢問素食需要幾位 -->
+          <div class="bg-wedding-ivory/60 p-4 md:p-5 rounded-2xl border border-wedding-sandstone/40">
+            <div class="flex items-center justify-between mb-2">
+              <label for="entry_281892954" class="block text-xs md:text-sm font-medium text-wedding-retroBlue tracking-wider">
+                其中素食需要幾位 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">VEGETARIAN MEALS</span>
+              </label>
+              <span id="vegStatusBadge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-wedding-sandstone/20 text-wedding-charcoal/80 font-medium">
+                全數葷食
+              </span>
+            </div>
+            <p class="text-[11px] md:text-xs text-wedding-charcoal/60 mb-3">
+              若無人吃素，請填寫「0」；會館將依此為吃素親友準備個人全素套餐。
+            </p>
+
+            <div class="flex items-center space-x-3 bg-white/90 p-3 rounded-xl border border-wedding-sandstone/40">
+              <div class="flex-1 flex items-center justify-between">
+                <span class="text-xs font-semibold text-wedding-brickRed flex items-center">
+                  <i class="fa-solid fa-leaf mr-1.5 text-xs"></i> 素食套餐份數
+                </span>
+                <div class="flex items-center space-x-2 w-32">
+                  <input type="number" 
+                         id="entry_281892954" 
+                         name="entry.281892954" 
+                         min="0" 
+                         value="0" 
+                         class="w-full text-center font-cormorant text-xl font-bold text-wedding-brickRed bg-transparent border-b border-wedding-brickRed/50 focus:outline-none focus:border-wedding-brickRed py-0.5">
+                  <span class="text-xs text-wedding-charcoal/60">位</span>
+                </div>
+              </div>
+            </div>
+
+            <p id="vegWarning" class="hidden text-[11px] text-wedding-brickRed mt-2">
+              <i class="fa-solid fa-triangle-exclamation mr-1"></i>素食人數不可大於參加晚宴總人數。
+            </p>
           </div>
 
-          <!-- 兒童椅數量 BABY CHAIR -->
+          <!-- 兒童椅需求 HIGH CHAIR NEEDED -->
           <div>
             <label for="entry_2001941814" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
-              兒童椅數量 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">BABY CHAIR</span>
+              是否需要兒童椅 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">BABY CHAIR</span>
             </label>
-            <input type="number" 
-                   id="entry_2001941814" 
-                   name="entry.2001941814" 
-                   min="0" 
-                   value="0" 
-                   placeholder="若不需要請填 0" 
-                   class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
+            <select id="entry_2001941814" 
+                    name="entry.2001941814" 
+                    class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
+              <option value="不需要" selected>不需要</option>
+              <option value="1">需要 1 張</option>
+              <option value="2">需要 2 張</option>
+              <option value="3">需要 3 張或以上</option>
+            </select>
           </div>
         </div>
 
-        <!-- 欄位 6: 給新人的祝福與備註 BLESSING -->
+        <!-- 欄位 6: 給新人的祝福與備註 BLESSINGS -->
         <div>
           <label for="entry_1702588743" class="block text-xs md:text-sm font-medium text-wedding-retroBlue mb-2 tracking-wider">
             給新人的祝福與備註 <span class="font-cormorant tracking-widest text-wedding-sandstone text-xs font-semibold">MESSAGE & BLESSINGS</span>
@@ -497,7 +522,7 @@
         </div>
       </form>
 
-      <!-- 送出成功的典雅提示彈窗 (純 CSS/DOM 顯示，取代 alert) -->
+      <!-- 送出狀態提示（不宣稱後台已寫入） -->
       <div id="successCard" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md rounded-3xl p-8 flex flex-col items-center justify-center text-center z-10 transition-all duration-500">
         <div class="w-16 h-16 rounded-full bg-wedding-brickRed/10 border border-wedding-brickRed/30 flex items-center justify-center text-wedding-brickRed text-3xl mb-4">
           <i class="fa-solid fa-check"></i>
@@ -525,6 +550,9 @@
 
   <!-- ================= 邏輯與腳本 ================= -->
   <script>
+    // 提交狀態管理
+    window.isSubmitting = false;
+
     // --- 1. 倒數計時器邏輯 ---
     const targetDate = new Date('2027-04-17T18:00:00+08:00').getTime();
 
@@ -554,59 +582,100 @@
     setInterval(updateCountdown, 1000);
 
 
-    // --- 2. 智能表單邏輯 (人數 > 0 時才顯示素食與兒童椅需求) ---
+    // --- 2. 智能表單邏輯 ---
     const guestsInput = document.getElementById('entry_1271661895');
     const conditionalSection = document.getElementById('conditionalSection');
-    const vegInput = document.getElementById('entry_281892954');
-    const chairInput = document.getElementById('entry_2001941814');
+    const vegCountInput = document.getElementById('entry_281892954');
+    const vegStatusBadge = document.getElementById('vegStatusBadge');
+    const vegWarning = document.getElementById('vegWarning');
+
+    function syncVegCount() {
+      const totalGuests = parseInt(guestsInput.value, 10) || 0;
+      let vegCount = parseInt(vegCountInput.value, 10);
+      if (isNaN(vegCount) || vegCount < 0) vegCount = 0;
+
+      if (vegCount > totalGuests && totalGuests > 0) {
+        vegWarning.classList.remove('hidden');
+      } else {
+        vegWarning.classList.add('hidden');
+      }
+
+      if (vegCount === 0) {
+        vegStatusBadge.innerText = '全數葷食';
+      } else if (vegCount === totalGuests && totalGuests > 0) {
+        vegStatusBadge.innerText = `全數素食 (${vegCount}位)`;
+      } else {
+        vegStatusBadge.innerText = `素食 ${vegCount} 位 / 葷食 ${Math.max(0, totalGuests - vegCount)} 位`;
+      }
+    }
 
     guestsInput.addEventListener('input', function() {
       const count = parseInt(this.value, 10);
       if (!isNaN(count) && count > 0) {
         conditionalSection.classList.remove('hidden');
+        vegCountInput.max = count;
       } else {
         conditionalSection.classList.add('hidden');
-        // 隱藏時預設值保持為 0，避免傳送空字串觸發 Google 表單格式驗證失敗
-        vegInput.value = '0';
-        chairInput.value = '0';
+        vegCountInput.value = 0;
       }
+      syncVegCount();
+    });
+
+    vegCountInput.addEventListener('input', function() {
+      syncVegCount();
     });
 
 
-    // --- 3. 100% 穩固純原生提交機制 (讓表單標準 POST 進 hidden_iframe) ---
-    function handleSubmitForm() {
-      const submitBtn = document.getElementById('submitBtn');
-
-      // 1. 數值防呆：若素食或兒童椅為空，一律補 0
-      if (!vegInput.value || vegInput.value.trim() === '') vegInput.value = '0';
-      if (!chairInput.value || chairInput.value.trim() === '') chairInput.value = '0';
-
-      // 2. 切換按鈕提示狀態
-      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-wedding-brickRed"></i> <span>資料送出中...</span>';
-
-      // 3. 延遲 800 毫秒展示成功畫面（確保原生 POST 請求已由瀏覽器完整發送至 Google 伺服器）
-      setTimeout(() => {
-        onFormSubmitSuccess();
-      }, 800);
-
-      // 回傳 true，允許瀏覽器以原生標準方式向 target="hidden_iframe" 提交表單
-      return true;
-    }
-
-    // --- 4. 提交成功畫面處理 ---
-    function onFormSubmitSuccess() {
-      const successCard = document.getElementById('successCard');
-      successCard.classList.remove('hidden');
-
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.innerHTML = '<span>確認送出回函</span><i class="fa-regular fa-paper-plane text-wedding-brickRed text-sm"></i>';
+    // --- 3. Google Apps Script 提交 ---
+    // 注意：跨網域 no-cors 回應不可讀，無法確認試算表寫入成功。
+    // 因此不顯示「成功送出」，僅提示使用者確認。
+    async function handleSubmitForm(e) {
+      e.preventDefault();
+      if (window.isSubmitting) return false;
+      const guests = Number(guestsInput.value);
+      const vegetarian = guests > 0 ? Number(vegCountInput.value || 0) : 0;
+      if (!Number.isInteger(guests) || guests < 0 || guests > 10 ||
+          !Number.isInteger(vegetarian) || vegetarian < 0 || vegetarian > guests) {
+        alert('請確認出席及素食人數是否正確。');
+        return false;
+      }
+      const payload = {
+        name: document.getElementById('entry_326328616').value.trim(),
+        email: document.getElementById('entry_300528326').value.trim(),
+        phone: document.getElementById('entry_773929273').value.trim(),
+        relationship: document.getElementById('entry_333244215').value,
+        guests,
+        vegetarian,
+        babyChair: guests > 0 ? document.getElementById('entry_2001941814').value : '不需要',
+        message: document.getElementById('entry_1702588743').value.trim()
+      };
+      const btn = document.getElementById('submitBtn');
+      window.isSubmitting = true;
+      btn.disabled = true;
+      btn.innerHTML = '<span>資料傳送中...</span>';
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbxEUmWSjEZHudphtfUKjLnnTVt4mnHrNIcFxrDc3nZ5OgbVyT2rBqEf_9gQ40udFwQH/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'text/plain;charset=utf-8'},
+          body: JSON.stringify(payload)
+        });
+        document.querySelector('#successCard h3').textContent = '回函已送出，等待確認';
+        document.querySelector('#successCard p').textContent = '資料已由網站送出，但瀏覽器無法確認 Google 試算表是否寫入成功。請向新人確認，或由新人查看試算表回覆紀錄。';
+        document.getElementById('successCard').classList.remove('hidden');
+      } catch (err) {
+        alert('傳送失敗，請稍後重試。');
+      } finally {
+        window.isSubmitting = false;
+        btn.disabled = false;
+        btn.innerHTML = '<span>確認送出回函</span><i class="fa-regular fa-paper-plane text-wedding-brickRed text-sm"></i>';
+      }
+      return false;
     }
 
     // 重設表單狀態供二次修改
     function resetFormState() {
       document.getElementById('successCard').classList.add('hidden');
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.innerHTML = '<span>確認送出回函</span><i class="fa-regular fa-paper-plane text-wedding-brickRed text-sm"></i>';
     }
   </script>
 </body>

@@ -98,32 +98,44 @@
     </div>
   </header>
 
-  <!-- ================= 封面英雄區 (全螢幕) ================= -->
-  <section id="hero" class="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
-    <!-- 背景圖層與漸層覆蓋 -->
+  <!-- ================= 封面英雄區 (全螢幕 Hero Section) ================= -->
+  <section id="hero" class="relative min-h-[92vh] md:min-h-screen flex flex-col justify-end items-center text-center px-4 overflow-hidden pt-20 pb-10 md:pb-14">
+    <!-- 背景照片層：上半部清晰明亮，精準對焦臉部構圖 -->
     <div class="absolute inset-0 z-0">
       <img src="https://raw.githubusercontent.com/rogermylife/pictures/d13ccd990d8c5578781d8ca11441b8cae45e74b8/20260127emma-187.jpg" 
            alt="Roger and YaYun Wedding" 
-           class="w-full h-full object-cover object-center filter brightness-[0.85]"
+           class="w-full h-full object-cover object-[center_18%] sm:object-[center_15%] md:object-[center_12%] transition-all duration-500"
            onerror="this.src='https://placehold.co/1920x1080/35556B/F0E9DE?text=Roger+%26+YaYun'">
-      <div class="absolute inset-0 bg-gradient-to-t from-wedding-charcoal/85 via-wedding-retroBlueDark/45 to-wedding-charcoal/55"></div>
+      
+      <!-- 底部柔和自然漸層遮罩：上半透明透光，從 45% 處漸進過渡至深復古藍 #35556B -->
+      <div class="absolute inset-0 pointer-events-none" 
+           style="background: linear-gradient(180deg, rgba(38,62,79,0) 0%, rgba(38,62,79,0) 42%, rgba(53,85,107,0.38) 55%, rgba(53,85,107,0.78) 72%, rgba(42,68,86,0.95) 90%, #263E4F 100%);"></div>
     </div>
 
-    <!-- 封面文案內容 -->
-    <div class="relative z-10 text-white max-w-3xl mx-auto px-4 mt-12">
-      <p class="font-cormorant tracking-[0.3em] uppercase text-sm md:text-base text-wedding-sandstoneLight mb-3">Together with their families</p>
-      <h1 class="font-cormorant text-5xl md:text-7xl lg:text-8xl font-normal tracking-wide mb-4">
-        Roger <span class="italic text-wedding-brickRed">&</span> YaYun
+    <!-- 封面文案內容：整體沉澱於下方漸層區，完全避開人臉 -->
+    <div class="relative z-10 text-white max-w-3xl mx-auto px-4 mt-auto">
+      <!-- 經典副標 SAVE THE DATE -->
+      <p class="font-cormorant tracking-[0.35em] uppercase text-xs md:text-sm text-wedding-sandstoneLight font-semibold mb-2">
+        SAVE THE DATE
+      </p>
+      
+      <!-- 主新人標題 -->
+      <h1 class="font-cormorant text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-wide text-white drop-shadow-sm mb-3">
+        Roger <span class="italic text-wedding-brickRed mx-1">&</span> YaYun
       </h1>
-      <div class="w-16 h-0.5 bg-wedding-sandstone mx-auto my-6"></div>
-      <p class="text-lg md:text-2xl font-light tracking-widest text-[#F0E9DE]/95 mb-2">誠摯邀請您見證我們的幸福時刻</p>
-      <p class="font-cormorant text-xl md:text-2xl tracking-widest text-wedding-sandstoneLight font-light">
+
+      <!-- 溫馨邀約文字與婚期 -->
+      <p class="text-sm sm:text-base md:text-lg font-light tracking-widest text-[#F0E9DE]/95 mb-1.5 drop-shadow">
+        期待與您共享這特別的一天
+      </p>
+      <p class="font-cormorant text-sm sm:text-base md:text-lg tracking-[0.25em] text-wedding-sandstoneLight font-light">
         APRIL 17, 2027 • HSINCHU
       </p>
 
-      <div class="mt-10">
-        <a href="#details" class="inline-block animate-bounce text-white/70 hover:text-white transition-colors">
-          <i class="fa-solid fa-chevron-down text-xl"></i>
+      <!-- 沉穩向下捲動箭頭 -->
+      <div class="mt-6 md:mt-8">
+        <a href="#about" aria-label="向下捲動" class="inline-block animate-bounce text-white/70 hover:text-white transition-colors p-2">
+          <i class="fa-solid fa-chevron-down text-lg md:text-xl"></i>
         </a>
       </div>
     </div>

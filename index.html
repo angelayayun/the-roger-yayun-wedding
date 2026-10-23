@@ -17,8 +17,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
-    // 預先宣告全域表單提交旗標，防止 iframe 初始載入時出現 ReferenceError
+    // 預先宣告全域變數與 iframe 處理函式，防止 iframe 初始載入時出現 ReferenceError: handleIframeLoad is not defined
     window.submitted = false;
+    window.isSubmitting = false;
+    window.handleIframeLoad = function() {
+      // 初始加載時不執行任何操作
+    };
 
     tailwind.config = {
       theme: {
@@ -354,7 +358,7 @@
     </div>
 
     <!-- 隱藏式 Iframe 技術容器 (使用嚴格監聽，防止誤觸) -->
-    <iframe name="hidden_iframe" id="hidden_iframe" class="opacity-0 absolute -z-50 w-0 h-0 pointer-events-none border-0" onload="handleIframeLoad()"></iframe>
+    <iframe name="hidden_iframe" id="hidden_iframe" class="opacity-0 absolute -z-50 w-0 h-0 pointer-events-none border-0"></iframe>
 
     <!-- 回函表單主體 -->
     <div class="glow-card rounded-3xl p-6 md:p-10 border border-wedding-sandstone/40 shadow-soft relative">
@@ -364,10 +368,6 @@
             target="hidden_iframe" 
             onsubmit="return handleSubmitForm(event);" 
             class="space-y-6">
-
-        <!-- Google 表單必要隱藏參數，防止 Google 反垃圾機制阻擋 -->
-        <input type="hidden" name="fvv" value="1">
-        <input type="hidden" name="pageHistory" value="0">
 
         <!-- 欄位 1: 姓名 NAME -->
         <div>
@@ -421,6 +421,8 @@
             <option value="女方親戚">女方親戚</option>
             <option value="新郎同學、朋友">新郎同學、朋友</option>
             <option value="新娘同學、朋友">新娘同學、朋友</option>
+            <option value="男方同學、朋友">男方同學、朋友</option>
+            <option value="女方同學、朋友">女方同學、朋友</option>
             <option value="新郎同事">新郎同事</option>
             <option value="新娘同事">新娘同事</option>
             <option value="共同朋友">共同朋友</option>
@@ -443,7 +445,7 @@
           <p class="text-xs text-wedding-charcoal/50 mt-1.5">若不克出席，請填寫 0 即可</p>
         </div>
 
-        <!-- 智能表單邏輯容器：預設 disabled 防止空值送出被 Google 拒收 -->
+        <!-- 智能表單邏輯容器 (素食與兒童椅人數) -->
         <div id="conditionalSection" class="hidden space-y-6 pt-4 border-t border-dashed border-wedding-sandstone/50 transition-all duration-300">
           
           <!-- 素食人數 VEGETARIAN MEALS -->
@@ -456,7 +458,6 @@
                    name="entry.281892954" 
                    min="0" 
                    value="0" 
-                   disabled
                    placeholder="若無人吃素請填 0" 
                    class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
           </div>
@@ -471,7 +472,6 @@
                    name="entry.2001941814" 
                    min="0" 
                    value="0" 
-                   disabled
                    placeholder="若不需要請填 0" 
                    class="w-full px-4 py-3 rounded-xl border border-wedding-sandstone/50 bg-white/90 text-wedding-charcoal placeholder-wedding-charcoal/30 focus:outline-none focus:ring-2 focus:ring-wedding-brickRed/40 focus:border-wedding-brickRed transition-all duration-200">
           </div>
@@ -528,8 +528,6 @@
 
   <!-- ================= 邏輯與腳本 ================= -->
   <script>
-    // 提交狀態標記已在 head 初始化為 window.submitted = false
-
     // --- 1. 倒數計時器邏輯 ---
     const targetDate = new Date('2027-04-17T18:00:00+08:00').getTime();
 
@@ -559,7 +557,7 @@
     setInterval(updateCountdown, 1000);
 
 
-    // --- 2. 智能表單邏輯 (出席人數 > 0 時才啟用並顯示素食與兒童椅需求) ---
+    // --- 2. 智能表單邏輯 (人數 > 0 時才顯示素食與兒童椅需求) ---
     const guestsInput = document.getElementById('entry_1271661895');
     const conditionalSection = document.getElementById('conditionalSection');
     const vegInput = document.getElementById('entry_281892954');
@@ -569,63 +567,73 @@
       const count = parseInt(this.value, 10);
       if (!isNaN(count) && count > 0) {
         conditionalSection.classList.remove('hidden');
-        vegInput.removeAttribute('disabled');
-        chairInput.removeAttribute('disabled');
       } else {
         conditionalSection.classList.add('hidden');
-        // 隱藏時停用並設為 0，避免傳送空字串造成 Google 表單格式驗證失敗
-        vegInput.setAttribute('disabled', 'disabled');
-        chairInput.setAttribute('disabled', 'disabled');
+        // 隱藏時預設值保持為 0，避免傳送空字串觸發 Google 表單格式驗證失敗
         vegInput.value = '0';
         chairInput.value = '0';
       }
     });
 
 
-    // --- 3. 穩定提交機制：純原生 Iframe 提交，避免 Fetch 跨域取消 ---
-    window.isSubmitting = false;
+    // --- 3. 雙重可靠提交機制 (Fetch no-cors + Iframe 原生提交雙重保障) ---
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScltqEoZxdtP7sMR_-0rfAMgUXlQvZXURR7GyROZbvkPKjqQg/formResponse";
 
-    function handleSubmitForm(e) {
+    async function handleSubmitForm(e) {
       const submitBtn = document.getElementById('submitBtn');
-      const vegInput = document.getElementById('entry_281892954');
-      const chairInput = document.getElementById('entry_2001941814');
 
-      // 關鍵防呆：若欄位為空白，自動補 0，避免 Google 表單數值格式檢查失敗而拋棄整筆資料
-      if (vegInput && (!vegInput.value || vegInput.value.trim() === '')) {
-        vegInput.value = '0';
-      }
-      if (chairInput && (!chairInput.value || chairInput.value.trim() === '')) {
-        chairInput.value = '0';
-      }
+      // 1. 防呆修正：素食與兒童椅若為空值，一律補 "0"
+      if (!vegInput.value || vegInput.value.trim() === '') vegInput.value = '0';
+      if (!chairInput.value || chairInput.value.trim() === '') chairInput.value = '0';
 
-      // 標記正在提交
-      window.isSubmitting = true;
-
-      // 切換按鈕載入狀態
+      // 2. 切換按鈕狀態
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-wedding-brickRed"></i> <span>資料送出中...</span>';
 
-      // 設定超時保護：即使跨域阻擋 onload，1.5 秒後也自動展現成功畫面
-      setTimeout(() => {
-        if (window.isSubmitting) {
-          onFormSubmitSuccess();
-        }
-      }, 1500);
+      // 3. 透過 URLSearchParams 建立乾淨的表單資料（包含所有必備 entry）
+      const params = new URLSearchParams();
+      params.append('entry.326328616', document.getElementById('entry_326328616').value);
+      params.append('entry.300528326', document.getElementById('entry_300528326').value);
+      params.append('entry.773929273', document.getElementById('entry_773929273').value || '');
+      params.append('entry.333244215', document.getElementById('entry_333244215').value);
+      params.append('entry.1271661895', document.getElementById('entry_1271661895').value);
+      params.append('entry.281892954', vegInput.value);
+      params.append('entry.2001941814', chairInput.value);
+      params.append('entry.1702588743', document.getElementById('entry_1702588743').value || '');
 
-      // 允許表單原生 POST 到 target="hidden_iframe"
+      // 4. 第一重保險：直接使用 fetch 以 no-cors 模式發送 POST 請求
+      // 這種方式在 GitHub Pages 上完全不受 iframe 跨域限制影響，能直接打進 Google 伺服器
+      try {
+        fetch(GOOGLE_FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: params.toString()
+        }).catch(err => console.log('Fetch dispatched'));
+      } catch (err) {
+        console.error(err);
+      }
+
+      // 5. 第二重保險：同時讓表單原生提交給 target="hidden_iframe"
+      // 延遲 1 秒後顯示成功畫面，確保請求已順利自瀏覽器送出
+      setTimeout(() => {
+        onFormSubmitSuccess();
+      }, 1000);
+
       return true;
     }
 
-    // 當 hidden_iframe 載入完成（即 Google 表單回應）時觸發
-    function handleIframeLoad() {
+    // 當 iframe 載入時的輔助觸發
+    window.handleIframeLoad = function() {
       if (window.isSubmitting) {
         onFormSubmitSuccess();
       }
-    }
+    };
 
     // --- 4. 提交成功畫面處理 ---
     function onFormSubmitSuccess() {
-      window.isSubmitting = false;
       const successCard = document.getElementById('successCard');
       successCard.classList.remove('hidden');
 

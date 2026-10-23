@@ -1,140 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 新增 no-referrer 避免第三方圖床 (如 Postimages) 因 Referrer 阻擋顯示 -->
-    <meta name="referrer" content="no-referrer">
-    <title>Roger & YaYun - 婚禮邀請函</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Cormorant Garamond (Normal & Italic) & Noto Serif TC -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ivory: {
-                            100: '#FDFBF7',
-                            200: '#F0E9DE', // 象牙白主色
-                            300: '#E2D7C5',
-                        },
-                        vintage: {
-                            700: '#263E4F',
-                            800: '#35556B', // 復古藍主色
-                            900: '#233948',
-                        },
-                        terracotta: {
-                            400: '#C27464',
-                            500: '#A65B4D', // 磚紅點綴色
-                            600: '#8A473A',
-                        },
-                        sandstone: {
-                            300: '#D4C4AE',
-                            400: '#BDA68A', // 砂岩米色
-                            500: '#A38B6E',
-                        },
-                        charcoal: {
-                            700: '#4A4643',
-                            800: '#302D2B', // 炭黑文字色
-                            900: '#1D1B1A',
-                        }
-                    },
-                    fontFamily: {
-                        // 中文標題與內文均使用 Noto Serif TC
-                        heading: ['"Noto Serif TC"', 'serif'],
-                        body: ['"Noto Serif TC"', 'serif'],
-                        // 英文標題
-                        cormorant: ['"Cormorant Garamond"', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            font-family: 'Noto Serif TC', serif;
-            background-color: #F0E9DE;
-            color: #302D2B;
-        }
-
-        .font-heading {
-            font-family: 'Noto Serif TC', serif;
-        }
-        .font-body {
-            font-family: 'Noto Serif TC', serif;
-        }
-        .font-cormorant {
-            font-family: 'Cormorant Garamond', serif;
-        }
-        .font-cormorant-italic {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-        }
-
-        /* 毛玻璃效果 */
-        .glass-nav {
-            background: rgba(240, 233, 222, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(189, 166, 138, 0.3);
-        }
-        /* 白色微光計時器卡片 */
-        .glow-card {
-            background: rgba(253, 251, 247, 0.95);
-            box-shadow: 0 10px 30px -5px rgba(166, 91, 77, 0.15), 0 0 15px rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(189, 166, 138, 0.25);
-        }
-
-        /* Gallery editorial refinements */
-        .hero-photo { display:block; width:100%; height:auto; }
-        .gallery-rule { height:1px; background:#BDA68A; opacity:.65; }
-        .gallery-detail { border-top:1px solid rgba(53,85,107,.28); padding:1.65rem 0; }
-        .gallery-label { font-family:'Cormorant Garamond',serif; font-style:italic; letter-spacing:.14em; color:#A65B4D; font-size:1.05rem; }
-        #countdown, #details, #rsvp { scroll-margin-top:72px; }
-        @media (max-width: 640px) { .gallery-detail { padding:1.35rem 0; } }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-terracotta-500 selection:text-ivory-100 font-body">
-
-    <!-- 1. 頂端固定毛玻璃導航列 -->
-    <nav class="fixed top-0 left-0 w-full z-50 glass-nav border-b border-sandstone-400/30 px-4 py-3 transition-all duration-300">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <a href="#" class="font-cormorant text-2xl md:text-3xl font-bold tracking-wider text-terracotta-500">R+Y</a>
-            <div class="flex space-x-6 md:space-x-10 text-sm md:text-base tracking-widest text-vintage-800 font-medium font-body">
-                <a href="#details" class="hover:text-terracotta-500 transition-colors">婚禮詳情</a>
-                <a href="#rsvp" class="hover:text-terracotta-500 transition-colors">出席回函</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Gallery hero: image is never cropped; text is in a separate panel -->
-    <header class="bg-ivory-200 pt-16">
-        <div class="max-w-6xl mx-auto">
-            <img class="hero-photo" src="https://raw.githubusercontent.com/rogermylife/pictures/d13ccd990d8c5578781d8ca11441b8cae45e74b8/20260127emma-187.jpg" alt="Roger 與 YaYun 婚紗照" fetchpriority="high">
-        </div>
-        <div class="text-center px-5 py-12 sm:py-16 max-w-3xl mx-auto">
-            <p class="font-cormorant-italic text-xl sm:text-2xl tracking-[.20em] text-terracotta-500">Save The Date</p>
-            <h1 class="font-cormorant text-5xl sm:text-7xl font-light text-vintage-800 mt-3">Roger <span class="font-cormorant-italic text-terracotta-500">&amp;</span> YaYun</h1>
-            <div class="gallery-rule w-24 mx-auto my-6"></div>
-            <p class="font-body text-sm sm:text-base tracking-widest text-charcoal-800 leading-loose">誠摯邀請您見證我們的幸福時刻</p>
-            <p class="font-cormorant-italic text-2xl sm:text-3xl tracking-widest text-vintage-800 mt-5">2027 . 04 . 17</p>
-            <a href="#countdown" class="inline-block mt-7 font-cormorant-italic text-lg text-terracotta-500 underline underline-offset-8">Discover More ↓</a>
-        </div>
-    </header>
-
+<!-- ... existing code ... -->
     <!-- 2. 計時器視覺 (白色微光卡片與垂直細線) -->
     <section id="countdown" class="py-16 px-4 bg-vintage-800 border-y border-sandstone-400/20 text-ivory-100">
         <div class="max-w-4xl mx-auto text-center">
@@ -148,242 +12,106 @@
                 </span>
             </div>
             
-            <div class="flex justify-center items-center gap-1 sm:gap-4 md:gap-6">
+            <div class="flex justify-center items-center gap-2 sm:gap-4 md:gap-6">
                 <!-- 天 -->
-                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="days" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">天 <span class="font-cormorant-italic">DAYS</span></span>
+                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">天 <span class="font-cormorant-italic">DAYS</span></span>
                 </div>
                 <div class="h-10 sm:h-14 w-[1px] bg-sandstone-400/50"></div>
                 <!-- 時 -->
-                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="hours" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">時 <span class="font-cormorant-italic">HOURS</span></span>
+                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">時 <span class="font-cormorant-italic">HOURS</span></span>
                 </div>
                 <div class="h-10 sm:h-14 w-[1px] bg-sandstone-400/50"></div>
                 <!-- 分 -->
-                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="minutes" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">分 <span class="font-cormorant-italic">MINS</span></span>
+                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">分 <span class="font-cormorant-italic">MINS</span></span>
                 </div>
                 <div class="h-10 sm:h-14 w-[1px] bg-sandstone-400/50"></div>
                 <!-- 秒 -->
-                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="seconds" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">秒 <span class="font-cormorant-italic">SECS</span></span>
+                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">秒 <span class="font-cormorant-italic">SECS</span></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. 婚禮詳情：art-gallery editorial layout -->
-    <section id="details" class="py-20 sm:py-28 px-5 bg-ivory-200">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-12 sm:mb-16">
-                <p class="font-cormorant-italic text-xl text-terracotta-500 tracking-widest mb-2">Wedding Details</p>
-                <h2 class="font-heading text-3xl sm:text-4xl text-vintage-800 tracking-[.18em]">婚禮詳情</h2>
-                <div class="gallery-rule w-24 mx-auto mt-7"></div>
+    <!-- 3. 婚禮詳情 (比照第一版最初排版與內容) -->
+    <section id="details" class="py-20 px-4 bg-ivory-300/40 border-t border-sandstone-400/30">
+        <div class="max-w-3xl mx-auto space-y-10">
+            <div class="text-center space-y-1">
+                <h2 class="font-heading text-3xl md:text-4xl text-vintage-800 tracking-widest font-medium">婚禮詳情</h2>
+                <p class="font-cormorant-italic text-sandstone-500 text-base md:text-lg tracking-widest uppercase">Wedding Details</p>
             </div>
-            <div class="grid md:grid-cols-2 md:gap-16">
-                <div class="gallery-detail text-center md:text-left">
-                    <p class="gallery-label">01 / Date &amp; Time</p>
-                    <h3 class="font-heading text-lg text-vintage-800 tracking-widest mt-3">宴會時間</h3>
-                    <p class="font-cormorant text-5xl sm:text-6xl text-vintage-800 mt-4">17 <span class="text-2xl italic">April</span> 2027</p>
-                    <p class="text-charcoal-700 mt-3 tracking-wide text-sm">星期六</p>
-                    <p class="text-charcoal-800 mt-5 leading-loose text-sm sm:text-base">17:00 賓客入場<br>18:00 晚宴開始</p>
+
+            <!-- V-Card 卡片排版 -->
+            <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8 border border-sandstone-400/40">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center md:text-left">
+                    <!-- 時間資訊 -->
+                    <div class="flex flex-col items-center md:items-start space-y-3 border-b md:border-b-0 md:border-r border-sandstone-400/30 pb-6 md:pb-0 md:pr-8">
+                        <div class="w-12 h-12 rounded-full bg-terracotta-500/10 flex items-center justify-center text-terracotta-500 mb-1">
+                            <i class="fa-regular fa-calendar-check text-2xl"></i>
+                        </div>
+                        <h3 class="font-heading text-xl font-semibold tracking-wider text-vintage-800">宴會時間</h3>
+                        <div class="space-y-1 text-center md:text-left">
+                            <p class="font-body text-vintage-800 font-semibold text-lg sm:text-xl">2027 年 04 月 17 日（六）</p>
+                            <p class="font-body text-charcoal-700 text-sm tracking-wide">17:00 賓客入場 ｜ 18:00 晚宴開始</p>
+                        </div>
+                    </div>
+
+                    <!-- 地點資訊 -->
+                    <div class="flex flex-col items-center md:items-start space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-terracotta-500/10 flex items-center justify-center text-terracotta-500 mb-1">
+                            <i class="fa-solid fa-location-dot text-2xl"></i>
+                        </div>
+                        <h3 class="font-heading text-xl font-semibold tracking-wider text-vintage-800">宴會地點</h3>
+                        <div class="space-y-1 text-center md:text-left">
+                            <p class="font-body text-vintage-800 font-semibold text-lg sm:text-xl"><span class="whitespace-nowrap">港南艾茉爾婚宴會館</span></p>
+                            <p class="font-body text-charcoal-700 text-sm tracking-wide"><span class="whitespace-nowrap">新竹市海埔路588號</span></p>
+                        </div>
+                        <div class="pt-2">
+                            <a href="https://maps.app.goo.gl/wzvSL5maVhY6UJ7X6" target="_blank" class="inline-flex items-center space-x-2 text-xs bg-terracotta-500 hover:bg-terracotta-600 text-ivory-100 px-5 py-2.5 rounded-full transition-all shadow-md font-body tracking-wider hover:shadow-lg transform hover:-translate-y-0.5">
+                                <span>開啟 Google 地圖</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-detail text-center md:text-left">
-                    <p class="gallery-label">02 / Venue</p>
-                    <h3 class="font-heading text-lg text-vintage-800 tracking-widest mt-3">宴會地點</h3>
-                    <p class="font-heading text-xl sm:text-2xl text-vintage-800 mt-5 leading-relaxed">港南艾茉爾婚宴會館</p>
-                    <p class="text-charcoal-700 text-sm sm:text-base mt-3">新竹市海埔路588號</p>
-                    <a href="https://maps.app.goo.gl/wzvSL5maVhY6UJ7X6" target="_blank" rel="noopener noreferrer" class="inline-block mt-7 border-b border-terracotta-500 pb-1 text-terracotta-500 tracking-widest text-sm hover:text-vintage-800 transition-colors">開啟 Google 地圖 ↗</a>
-                </div>
-            </div>
-            <div class="gallery-detail text-center">
-                <button id="accordion-toggle" type="button" aria-expanded="false" aria-controls="accordion-content" class="mx-auto flex items-center gap-3 text-vintage-800 tracking-widest text-sm hover:text-terracotta-500 transition-colors py-2">
-                    <span>交通指引資訊</span><i id="accordion-icon" class="fa-solid fa-chevron-down transition-transform duration-300 text-xs"></i>
-                </button>
-                <div id="accordion-content" class="hidden max-w-2xl mx-auto mt-6 text-left text-charcoal-800 text-sm leading-loose space-y-4">
-                    <h4 class="font-heading text-vintage-800 text-base">小客車路線</h4>
-                    <p>國道3號 → 香山交流道（往香山方向）→ 台61線往北 → 台15線77公里處 → 海埔路左轉到底。</p>
-                    <p>國道1號 → 新竹交流道 → 台68線（往南寮方向）→ 台15線77公里處右轉 → 海埔路到底。</p>
+
+                <!-- 折疊式交通指引 Accordion -->
+                <div class="border-t border-sandstone-400/30 pt-6">
+                    <button id="accordion-toggle" class="w-full flex justify-between items-center text-left py-3.5 px-5 rounded-2xl bg-ivory-200/90 hover:bg-ivory-300 transition-colors border border-sandstone-400/30 text-vintage-800 font-body shadow-sm">
+                        <span class="font-medium tracking-wider flex items-center space-x-2.5">
+                            <i class="fa-solid fa-car text-terracotta-500"></i>
+                            <span>交通指引資訊</span>
+                        </span>
+                        <i id="accordion-icon" class="fa-solid fa-chevron-down transition-transform duration-300 text-sandstone-500"></i>
+                    </button>
+                    
+                    <div id="accordion-content" class="hidden mt-4 p-5 rounded-2xl bg-ivory-100/95 text-charcoal-800 text-sm leading-relaxed space-y-4 border border-sandstone-400/20 font-body shadow-inner">
+                        <div>
+                            <h4 class="text-terracotta-500 font-medium mb-2 flex items-center space-x-2 font-heading text-base">
+                                <i class="fa-solid fa-route"></i>
+                                <span>小客車路線</span>
+                            </h4>
+                            <ul class="list-disc list-inside space-y-2 text-charcoal-700 pl-1">
+                                <li>
+                                    <span class="whitespace-nowrap">國道3號</span> → 下<span class="whitespace-nowrap">香山交流道</span>(往香山方向)接<span class="whitespace-nowrap">台61線</span>往北 → 走到<span class="whitespace-nowrap">台15線77公里處</span> → <span class="whitespace-nowrap">海埔路</span>左轉走到底即為目的地。
+                                </li>
+                                <li>
+                                    <span class="whitespace-nowrap">國道1號</span> → 下<span class="whitespace-nowrap">新竹交流道</span> → 接<span class="whitespace-nowrap">台68線東西向快速道路</span>(往南寮方向) → 接<span class="whitespace-nowrap">台15線77公里處</span>右轉 → <span class="whitespace-nowrap">海埔路</span>走到底即為目的地。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 4, 5, 8. 出席回函與表單 -->
-    <section id="rsvp" class="py-20 px-4">
-        <div class="max-w-2xl mx-auto space-y-8">
-            <div class="text-center space-y-2">
-                <!-- 中文主標題：彭蠡文楷 / 英文裝飾文字：Cormorant Garamond Italic -->
-                <h2 class="font-heading text-3xl md:text-4xl text-vintage-800 tracking-widest font-medium">出席回函</h2>
-                <p class="font-cormorant-italic text-sandstone-500 text-base md:text-lg tracking-widest uppercase">Attending Confirmation</p>
-            </div>
-
-            <!-- 隱藏 Iframe 技術用於無刷新提交 -->
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(typeof submitted !== 'undefined' && submitted){showSuccessMessage();}"></iframe>
-
-            <form id="weddingForm" action="https://docs.google.com/forms/d/e/1FAIpQLScltqEoZxdtP7sMR_-0rfAMgUXlQvZXURR7GyROZbvkPKjqQg/formResponse" method="POST" target="hidden_iframe" class="glass-card rounded-3xl p-6 sm:p-10 space-y-6 shadow-xl border border-sandstone-400/30 font-body">
-                
-                <!-- 姓名 NAME -->
-                <div class="space-y-2">
-                    <label for="name" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                        姓名 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">NAME</span> <span class="text-terracotta-500">*</span>
-                    </label>
-                    <input type="text" id="name" name="entry.326328616" required placeholder="請輸入您的姓名" class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors placeholder:text-charcoal-700/40 font-body">
-                </div>
-
-                <!-- 電子郵件 EMAIL -->
-                <div class="space-y-2">
-                    <label for="email" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                        電子郵件 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">EMAIL</span>
-                    </label>
-                    <input type="email" id="email" name="entry.300528326" placeholder="example@mail.com" class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors placeholder:text-charcoal-700/40 font-body">
-                </div>
-
-                <!-- 與新人關係 RELATIONSHIP -->
-                <div class="space-y-2">
-                    <label for="relationship" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                        與新人的關係 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">RELATIONSHIP</span> <span class="text-terracotta-500">*</span>
-                    </label>
-                    <select id="relationship" name="entry.333244215" required class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors font-body">
-                        <option value="" disabled selected>請選擇關係</option>
-                        <option value="男方家人親戚">男方家人親戚</option>
-                        <option value="男方同事">男方同事</option>
-                        <option value="男方同學、朋友">男方同學、朋友</option>
-                        <option value="女方家人親戚">女方家人親戚</option>
-                        <option value="女方同事">女方同事</option>
-                        <option value="女方同學、朋友">女方同學、朋友</option>
-                    </select>
-                </div>
-
-                <!-- 參加人數 ATTENDANTS -->
-                <div class="space-y-2">
-                    <label for="attendees" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                        參加晚宴人數 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">ATTENDANTS</span> <span class="text-terracotta-500">*</span>
-                    </label>
-                    <input type="number" id="attendees" name="entry.1271661895" min="0" max="10" required placeholder="請填寫人數（無法出席請填0）" class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors placeholder:text-charcoal-700/40 font-body">
-                </div>
-
-                <!-- 8. 智能條件觸發區塊 (飲食需求 & 兒童椅) -->
-                <div id="conditional-fields" class="space-y-6 hidden pt-2 border-t border-sandstone-400/30">
-                    <!-- 飲食需求 DIETARY REQUIREMENTS -->
-                    <div class="space-y-2">
-                        <label for="diet" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                            飲食需求 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">DIETARY REQUIREMENTS</span>
-                        </label>
-                        <select id="diet" name="entry.200704611" class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors font-body">
-                            <option value="葷食">葷食</option>
-                            <option value="素食">素食</option>
-                        </select>
-                    </div>
-
-                    <!-- 是否需要兒童椅 HIGH CHAIR -->
-                    <div class="space-y-2">
-                        <label for="babyseat" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                            是否需要兒童椅 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">HIGH CHAIR</span>
-                        </label>
-                        <select id="babyseat" name="entry.2001941814" class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors font-body">
-                            <option value="不需要">不需要</option>
-                            <option value="需要">需要</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- 祝福的話 BLESSINGS -->
-                <div class="space-y-2">
-                    <label for="blessing" class="block text-sm font-medium text-vintage-800 tracking-wider">
-                        給新人的祝福 <span class="font-cormorant-italic text-xs text-terracotta-500 ml-1">BLESSINGS</span>
-                    </label>
-                    <textarea id="blessing" name="entry.1702588743" rows="3" placeholder="請寫下您對我們的祝福..." class="w-full bg-ivory-100 border border-sandstone-400/40 rounded-xl px-4 py-3 text-charcoal-800 focus:outline-none focus:border-terracotta-500 transition-colors placeholder:text-charcoal-700/40 font-body"></textarea>
-                </div>
-
-                <!-- 送出按鈕 -->
-                <button type="submit" class="w-full bg-terracotta-500 hover:bg-terracotta-600 text-ivory-100 font-semibold py-3.5 rounded-xl shadow-lg transition-all duration-300 tracking-widest text-lg font-heading">
-                    確認送出 SUBMIT
-                </button>
-            </form>
-
-            <!-- 成功提示訊息框 -->
-            <div id="successMessage" class="hidden glass-card rounded-3xl p-8 text-center space-y-4 border border-terracotta-500/30 font-body">
-                <i class="fa-solid fa-circle-check text-4xl text-terracotta-500"></i>
-                <h3 class="font-heading text-2xl font-bold text-vintage-800">感謝您的回覆！</h3>
-                <p class="text-charcoal-700 text-sm">我們已收到您的出席資料，期待在婚禮當天與您相見！</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 頁尾 -->
-    <footer class="py-8 text-center border-t border-sandstone-400/20 text-charcoal-700/60 text-xs tracking-widest bg-ivory-300/30">
-        <p class="font-cormorant-italic">2027 ROGER & YAYUN WEDDING INVITATION</p>
-    </footer>
-
-    <!-- JS 腳本 -->
-    <script>
-        // 宣告全域變數與成功訊息處理函數
-        let submitted = false;
-        function showSuccessMessage() {
-            document.getElementById('weddingForm').classList.add('hidden');
-            document.getElementById('successMessage').classList.remove('hidden');
-        }
-
-        // 倒數計時邏輯 (2027/04/17 18:00)
-        const targetDate = new Date('2027-04-17T18:00:00+08:00').getTime();
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById('days').innerText = String(days).padStart(2, '0');
-                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-            } else {
-                document.getElementById('days').innerText = '00';
-                document.getElementById('hours').innerText = '00';
-                document.getElementById('minutes').innerText = '00';
-                document.getElementById('seconds').innerText = '00';
-            }
-        }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // 交通指引摺疊面板 Accordion 邏輯
-        const toggleBtn = document.getElementById('accordion-toggle');
-        const content = document.getElementById('accordion-content');
-        const icon = document.getElementById('accordion-icon');
-
-        toggleBtn.addEventListener('click', () => {
-            content.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
-            toggleBtn.setAttribute('aria-expanded', String(!content.classList.contains('hidden')));
-        });
-
-        // 8. 智能表單條件切換：參加人數大於 0 時顯示「飲食需求」與「兒童椅」
-        const attendeesInput = document.getElementById('attendees');
-        const conditionalFields = document.getElementById('conditional-fields');
-
-        attendeesInput.addEventListener('input', (e) => {
-            const val = parseInt(e.target.value, 10);
-            if (!isNaN(val) && val > 0) {
-                conditionalFields.classList.remove('hidden');
-            } else {
-                conditionalFields.classList.add('hidden');
-            }
-        });
-
-        // 表單提交監聽
-        document.getElementById('weddingForm').addEventListener('submit', () => {
-            submitted = true;
-        });
-    </script>
-</body>
-</html>
+<!-- ... existing code ... -->

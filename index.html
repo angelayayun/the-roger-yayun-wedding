@@ -97,6 +97,14 @@
             box-shadow: 0 10px 30px -5px rgba(166, 91, 77, 0.15), 0 0 15px rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(189, 166, 138, 0.25);
         }
+
+        /* Gallery editorial refinements */
+        .hero-photo { display:block; width:100%; height:auto; }
+        .gallery-rule { height:1px; background:#BDA68A; opacity:.65; }
+        .gallery-detail { border-top:1px solid rgba(53,85,107,.28); padding:1.65rem 0; }
+        .gallery-label { font-family:'Cormorant Garamond',serif; font-style:italic; letter-spacing:.14em; color:#A65B4D; font-size:1.05rem; }
+        #countdown, #details, #rsvp { scroll-margin-top:72px; }
+        @media (max-width: 640px) { .gallery-detail { padding:1.35rem 0; } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-terracotta-500 selection:text-ivory-100 font-body">
@@ -112,30 +120,19 @@
         </div>
     </nav>
 
-    <!-- 首頁全螢幕封面背景 -->
-    <header class="relative min-h-screen flex items-end justify-center bg-cover bg-[center_top] bg-no-repeat bg-charcoal-900" style="background-image: linear-gradient(to bottom, rgba(35, 57, 72, 0.05) 0%, rgba(35, 57, 72, 0.2) 50%, rgba(35, 57, 72, 0.85) 90%), url('https://raw.githubusercontent.com/rogermylife/pictures/d13ccd990d8c5578781d8ca11441b8cae45e74b8/20260127emma-187.jpg');">
-        <!-- 封面文字區域 (置底，避免擋到臉部) -->
-        <div class="text-center px-4 pb-8 sm:pb-12 max-w-3xl mx-auto space-y-1.5 sm:space-y-2.5 z-10">
-            <!-- 英文裝飾文字：Cormorant Garamond Italic -->
-            <p class="font-cormorant-italic text-sm sm:text-lg md:text-xl tracking-[0.3em] uppercase text-sandstone-300 drop-shadow-md">Save The Date</p>
-            
-            <!-- 英文標題：Cormorant Garamond & Cormorant Garamond Italic (&號) -->
-            <h1 class="font-cormorant text-3xl sm:text-5xl md:text-6xl font-light tracking-wide text-ivory-100 drop-shadow-lg">Roger <span class="text-terracotta-400 font-cormorant-italic">&</span> YaYun</h1>
-            
-            <!-- 中文內文 -->
-            <p class="font-body text-xs sm:text-sm md:text-base font-light tracking-widest text-ivory-200 drop-shadow">誠摯邀請您見證我們的幸福時刻</p>
-            
-            <!-- 日期英文裝飾文字：Cormorant Garamond Italic -->
-            <div class="pt-0.5">
-                <p class="font-cormorant-italic text-base sm:text-xl md:text-2xl tracking-widest text-sandstone-300 drop-shadow">2027 . 04 . 17</p>
-            </div>
+    <!-- Gallery hero: image is never cropped; text is in a separate panel -->
+    <header class="bg-ivory-200 pt-16">
+        <div class="max-w-6xl mx-auto">
+            <img class="hero-photo" src="https://raw.githubusercontent.com/rogermylife/pictures/d13ccd990d8c5578781d8ca11441b8cae45e74b8/20260127emma-187.jpg" alt="Roger 與 YaYun 婚紗照" fetchpriority="high">
         </div>
-        <!-- 下滑提示 -->
-        <a href="#countdown" class="absolute bottom-1 sm:bottom-2 left-1/2 transform -translate-x-1/2 text-ivory-200/80 hover:text-terracotta-400 animate-bounce p-1 z-20" aria-label="向下滾動">
-            <svg class="w-5 h-5 sm:w-6 sm:h-6 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-            </svg>
-        </a>
+        <div class="text-center px-5 py-12 sm:py-16 max-w-3xl mx-auto">
+            <p class="font-cormorant-italic text-xl sm:text-2xl tracking-[.20em] text-terracotta-500">Save The Date</p>
+            <h1 class="font-cormorant text-5xl sm:text-7xl font-light text-vintage-800 mt-3">Roger <span class="font-cormorant-italic text-terracotta-500">&amp;</span> YaYun</h1>
+            <div class="gallery-rule w-24 mx-auto my-6"></div>
+            <p class="font-body text-sm sm:text-base tracking-widest text-charcoal-800 leading-loose">誠摯邀請您見證我們的幸福時刻</p>
+            <p class="font-cormorant-italic text-2xl sm:text-3xl tracking-widest text-vintage-800 mt-5">2027 . 04 . 17</p>
+            <a href="#countdown" class="inline-block mt-7 font-cormorant-italic text-lg text-terracotta-500 underline underline-offset-8">Discover More ↓</a>
+        </div>
     </header>
 
     <!-- 2. 計時器視覺 (白色微光卡片與垂直細線) -->
@@ -151,102 +148,66 @@
                 </span>
             </div>
             
-            <div class="flex justify-center items-center gap-2 sm:gap-4 md:gap-6">
+            <div class="flex justify-center items-center gap-1 sm:gap-4 md:gap-6">
                 <!-- 天 -->
-                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="days" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">天 <span class="font-cormorant-italic">DAYS</span></span>
+                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">天 <span class="font-cormorant-italic">DAYS</span></span>
                 </div>
                 <div class="h-10 sm:h-14 w-[1px] bg-sandstone-400/50"></div>
                 <!-- 時 -->
-                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="hours" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">時 <span class="font-cormorant-italic">HOURS</span></span>
+                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">時 <span class="font-cormorant-italic">HOURS</span></span>
                 </div>
                 <div class="h-10 sm:h-14 w-[1px] bg-sandstone-400/50"></div>
                 <!-- 分 -->
-                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="minutes" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">分 <span class="font-cormorant-italic">MINS</span></span>
+                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">分 <span class="font-cormorant-italic">MINS</span></span>
                 </div>
                 <div class="h-10 sm:h-14 w-[1px] bg-sandstone-400/50"></div>
                 <!-- 秒 -->
-                <div class="glow-card rounded-2xl p-3 sm:p-5 min-w-[70px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
+                <div class="glow-card rounded-2xl p-2 sm:p-5 min-w-[60px] sm:min-w-[100px] md:min-w-[120px] text-vintage-800">
                     <span id="seconds" class="font-cormorant text-3xl sm:text-5xl font-bold block text-terracotta-500">00</span>
-                    <span class="text-xs sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">秒 <span class="font-cormorant-italic">SECS</span></span>
+                    <span class="text-[10px] sm:text-sm tracking-wider text-charcoal-700 font-medium font-body">秒 <span class="font-cormorant-italic">SECS</span></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. 婚禮詳情 (精緻卡片與視覺優化) -->
-    <section id="details" class="py-20 px-4 bg-ivory-300/40 border-t border-sandstone-400/30">
-        <div class="max-w-3xl mx-auto space-y-10">
-            <div class="text-center space-y-1">
-                <h2 class="font-heading text-3xl md:text-4xl text-vintage-800 tracking-widest font-medium">婚禮詳情</h2>
-                <p class="font-cormorant-italic text-sandstone-500 text-base md:text-lg tracking-widest uppercase">Wedding Details</p>
+    <!-- 3. 婚禮詳情：art-gallery editorial layout -->
+    <section id="details" class="py-20 sm:py-28 px-5 bg-ivory-200">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12 sm:mb-16">
+                <p class="font-cormorant-italic text-xl text-terracotta-500 tracking-widest mb-2">Wedding Details</p>
+                <h2 class="font-heading text-3xl sm:text-4xl text-vintage-800 tracking-[.18em]">婚禮詳情</h2>
+                <div class="gallery-rule w-24 mx-auto mt-7"></div>
             </div>
-
-            <!-- V-Card 卡片排版優化 -->
-            <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8 border border-sandstone-400/40">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center md:text-left">
-                    <!-- 時間資訊 -->
-                    <div class="flex flex-col items-center md:items-start space-y-3 border-b md:border-b-0 md:border-r border-sandstone-400/30 pb-6 md:pb-0 md:pr-8">
-                        <div class="w-12 h-12 rounded-full bg-terracotta-500/10 flex items-center justify-center text-terracotta-500 mb-1">
-                            <i class="fa-regular fa-calendar-check text-2xl"></i>
-                        </div>
-                        <h3 class="font-heading text-xl font-semibold tracking-wider text-vintage-800">宴會時間</h3>
-                        <div class="space-y-1 text-center md:text-left">
-                            <p class="font-body text-vintage-800 font-semibold text-lg sm:text-xl">2027 年 04 月 17 日（六）</p>
-                            <p class="font-body text-charcoal-700 text-sm tracking-wide">17:00 賓客入場 ｜ 18:00 晚宴開始</p>
-                        </div>
-                    </div>
-
-                    <!-- 地點資訊 -->
-                    <div class="flex flex-col items-center md:items-start space-y-3">
-                        <div class="w-12 h-12 rounded-full bg-terracotta-500/10 flex items-center justify-center text-terracotta-500 mb-1">
-                            <i class="fa-solid fa-location-dot text-2xl"></i>
-                        </div>
-                        <h3 class="font-heading text-xl font-semibold tracking-wider text-vintage-800">宴會地點</h3>
-                        <div class="space-y-1 text-center md:text-left">
-                            <p class="font-body text-vintage-800 font-semibold text-lg sm:text-xl"><span class="whitespace-nowrap">港南艾茉爾婚宴會館</span></p>
-                            <p class="font-body text-charcoal-700 text-sm tracking-wide"><span class="whitespace-nowrap">aaaa新竹市海埔路588號</span></p>
-                        </div>
-                        <div class="pt-2">
-                            <a href="https://maps.app.goo.gl/wzvSL5maVhY6UJ7X6" target="_blank" class="inline-flex items-center space-x-2 text-xs bg-terracotta-500 hover:bg-terracotta-600 text-ivory-100 px-5 py-2.5 rounded-full transition-all shadow-md font-body tracking-wider hover:shadow-lg transform hover:-translate-y-0.5">
-                                <span>開啟 Google 地圖</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                        </div>
-                    </div>
+            <div class="grid md:grid-cols-2 md:gap-16">
+                <div class="gallery-detail text-center md:text-left">
+                    <p class="gallery-label">01 / Date &amp; Time</p>
+                    <h3 class="font-heading text-lg text-vintage-800 tracking-widest mt-3">宴會時間</h3>
+                    <p class="font-cormorant text-5xl sm:text-6xl text-vintage-800 mt-4">17 <span class="text-2xl italic">April</span> 2027</p>
+                    <p class="text-charcoal-700 mt-3 tracking-wide text-sm">星期六</p>
+                    <p class="text-charcoal-800 mt-5 leading-loose text-sm sm:text-base">17:00 賓客入場<br>18:00 晚宴開始</p>
                 </div>
-
-                <!-- 折疊式交通指引 Accordion -->
-                <div class="border-t border-sandstone-400/30 pt-6">
-                    <button id="accordion-toggle" class="w-full flex justify-between items-center text-left py-3.5 px-5 rounded-2xl bg-ivory-200/90 hover:bg-ivory-300 transition-colors border border-sandstone-400/30 text-vintage-800 font-body shadow-sm">
-                        <span class="font-medium tracking-wider flex items-center space-x-2.5">
-                            <i class="fa-solid fa-car text-terracotta-500"></i>
-                            <span>交通指引資訊</span>
-                        </span>
-                        <i id="accordion-icon" class="fa-solid fa-chevron-down transition-transform duration-300 text-sandstone-500"></i>
-                    </button>
-                    
-                    <div id="accordion-content" class="hidden mt-4 p-5 rounded-2xl bg-ivory-100/95 text-charcoal-800 text-sm leading-relaxed space-y-4 border border-sandstone-400/20 font-body shadow-inner">
-                        <div>
-                            <h4 class="text-terracotta-500 font-medium mb-2 flex items-center space-x-2 font-heading text-base">
-                                <i class="fa-solid fa-route"></i>
-                                <span>小客車路線</span>
-                            </h4>
-                            <ul class="list-disc list-inside space-y-2 text-charcoal-700 pl-1">
-                                <li>
-                                    <span class="whitespace-nowrap">國道3號</span> → 下<span class="whitespace-nowrap">香山交流道</span>(往香山方向)接<span class="whitespace-nowrap">台61線</span>往北 → 走到<span class="whitespace-nowrap">台15線77公里處</span> → <span class="whitespace-nowrap">海埔路</span>左轉走到底即為目的地。
-                                </li>
-                                <li>
-                                    <span class="whitespace-nowrap">國道1號</span> → 下<span class="whitespace-nowrap">新竹交流道</span> → 接<span class="whitespace-nowrap">台68線東西向快速道路</span>(往南寮方向) → 接<span class="whitespace-nowrap">台15線77公里處</span>右轉 → <span class="whitespace-nowrap">海埔路</span>走到底即為目的地。
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="gallery-detail text-center md:text-left">
+                    <p class="gallery-label">02 / Venue</p>
+                    <h3 class="font-heading text-lg text-vintage-800 tracking-widest mt-3">宴會地點</h3>
+                    <p class="font-heading text-xl sm:text-2xl text-vintage-800 mt-5 leading-relaxed">港南艾茉爾婚宴會館</p>
+                    <p class="text-charcoal-700 text-sm sm:text-base mt-3">新竹市海埔路588號</p>
+                    <a href="https://maps.app.goo.gl/wzvSL5maVhY6UJ7X6" target="_blank" rel="noopener noreferrer" class="inline-block mt-7 border-b border-terracotta-500 pb-1 text-terracotta-500 tracking-widest text-sm hover:text-vintage-800 transition-colors">開啟 Google 地圖 ↗</a>
+                </div>
+            </div>
+            <div class="gallery-detail text-center">
+                <button id="accordion-toggle" type="button" aria-expanded="false" aria-controls="accordion-content" class="mx-auto flex items-center gap-3 text-vintage-800 tracking-widest text-sm hover:text-terracotta-500 transition-colors py-2">
+                    <span>交通指引資訊</span><i id="accordion-icon" class="fa-solid fa-chevron-down transition-transform duration-300 text-xs"></i>
+                </button>
+                <div id="accordion-content" class="hidden max-w-2xl mx-auto mt-6 text-left text-charcoal-800 text-sm leading-loose space-y-4">
+                    <h4 class="font-heading text-vintage-800 text-base">小客車路線</h4>
+                    <p>國道3號 → 香山交流道（往香山方向）→ 台61線往北 → 台15線77公里處 → 海埔路左轉到底。</p>
+                    <p>國道1號 → 新竹交流道 → 台68線（往南寮方向）→ 台15線77公里處右轉 → 海埔路到底。</p>
                 </div>
             </div>
         </div>
@@ -369,7 +330,7 @@
         }
 
         // 倒數計時邏輯 (2027/04/17 18:00)
-        const targetDate = new Date('2027-04-17T18:00:00').getTime();
+        const targetDate = new Date('2027-04-17T18:00:00+08:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -403,6 +364,7 @@
         toggleBtn.addEventListener('click', () => {
             content.classList.toggle('hidden');
             icon.classList.toggle('rotate-180');
+            toggleBtn.setAttribute('aria-expanded', String(!content.classList.contains('hidden')));
         });
 
         // 8. 智能表單條件切換：參加人數大於 0 時顯示「飲食需求」與「兒童椅」
